@@ -1,7 +1,4 @@
-const fs = require("fs");
 const https = require('https');
-const stdin = fs.readFileSync(0).toString();
-const event = JSON.parse(stdin);
 
 const randomName = () => {
   return new Promise((resolve, reject) => {
@@ -15,10 +12,11 @@ const randomName = () => {
   })
 }
 
-randomName()
-  .then(data => data.results[0].name)
-  .then(name => `${name.first} ${name.last}`)
-  .then(randomName => JSON.stringify({
-    message: `Hello ${event.name}! My name is ${randomName}. Nice to meet you!`
-  }))
-  .then((response) => process.stdout.write(response))
+exports.sayHello = (event) => {
+  return randomName()
+    .then(data => data.results[0].name)
+    .then(name => `${name.first} ${name.last}`)
+    .then(randomName => JSON.stringify({
+      message: `Hello ${event.name}! My name is ${randomName}. Nice to meet you!`
+    }))
+}
